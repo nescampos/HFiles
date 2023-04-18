@@ -1,0 +1,144 @@
+﻿@model HFiles.Models.FilesModels.IndexFilesViewModel
+@{
+    ViewData["Title"] = "My files";
+}
+
+
+@section Header {
+    <header>
+		<h2>My files</h2>
+	</header>
+	<p>Check and create new files</p>
+	<ul class="actions">
+		<li><a href="@Url.Action("Index","Profile")" class="button">See my profile</a></li>
+        <li><a href="@Url.Action("Create","Files")" class="button">Create new file</a></li>
+	</ul>
+}
+
+
+
+<div class="wrapper">
+	<div class="container" id="main">
+        @if(!string.IsNullOrEmpty(Model.Error))
+        {
+            <div class="row">
+                <div class="col-12 alert alert-danger">
+                    @if(Model.Error == "no file")
+                    {
+                        <p>The file doesn't exist or was deleted.</p>
+                    }
+                    else
+                    {
+                        <p>You don't have access to the file.</p>
+                    }
+
+                </div>
+            </div>
+            <br />
+            <br />
+        }
+
+        @if(Model.Profile == null)
+        {
+            <div class="row col-12">
+                <div class="alert alert-danger">
+                    <p>You need to update your profile @Html.ActionLink("here","Update","Profile") before to upload files.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row col-12">
+                <div class="alert alert-info">
+                    @using (Html.BeginForm(null, null, FormMethod.Get))
+                    {
+                    <div class="row">
+                        <div class="col-md-6">
+                            Name: @Html.TextBox("name", Model.Name, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3">
+                            <br />
+                            <input type="submit" value="Filter" class="btn btn-secondary loadingButton" />
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">
+                    @if (Model.Page > 1)
+                    {
+                        <a href="@Url.Action("Index","Files",new { name=Model.Name, page = (Model.Page - 1) })">Back</a>
+                    }
+                </div>
+                <div class="col-6 text-left">
+                    <a href="@Url.Action("Index","Files",new {name=Model.Name, page = (Model.Page + 1) })">Next</a>
+                </div>
+            </div>
+		    <div class="row gtr-0">
+                <div class="col-12-narrower">
+                    @if(Model.Files.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Options
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        File name
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Created At (UTC)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var file in Model.Files)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink("Details","Detail", new { id = file.Id}) | 
+                                                        @Html.ActionLink("Update","Update","Files", new { id = file.Id})
+                                        </td>
+                                        <td>
+                                            @file.Name
+                                        </td>
+                                        <td>
+                                            @file.FileName
+                                        </td>
+                                        <td>
+                                            @file.Description
+                                        </td>
+                                        <td>
+                                            @file.CreatedAt
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">You have no created files.</div>
+                    }
+                </div>
+			
+
+		    </div>
+        }
+        
+						
+	</div>
+</div>
+
+
+
+
+

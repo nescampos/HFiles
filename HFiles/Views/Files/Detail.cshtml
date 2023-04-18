@@ -1,0 +1,55 @@
+﻿@model HFiles.Models.FilesModels.DetailFileViewModel
+@{
+}
+
+@section Header {
+    <header>
+		<h2>File - @Model.UserFile.Name</h2>
+	</header>
+	<ul class="actions">
+		<li><a href="@Url.Action("Index","Files")" class="button">Back</a></li>
+	</ul>
+}
+
+
+<div class="wrapper">
+    <div class="container" id="main">
+        <div class="row">
+            <div class="col-md-6">
+
+                <h3>Information</h3>
+                <br />
+                <p>
+                     File name: @Model.UserFile.FileName<br />
+                     Description: @Model.UserFile.Description <br />
+                    Content type: @Model.UserFile.ContentType <br />
+                    File Id: @("0.0."+Model.UserFile.HederaId) <br />
+                    Visibility: @(Model.UserFile.IsPrivate.GetValueOrDefault(false) ? "Private":"Public") <br />
+                    Created by: @Model.UserFile.Username <br />
+                    Created at: @Model.UserFile.CreatedAt <br />
+                    </p>
+                
+            </div>
+            <div class="col-md-6">
+                @Html.ActionLink("Download file","Download",new {id = Model.UserFile.Id},new {@class="btn btn-primary"})  
+                <div class="alert alert-warning">
+                    Downloading the file will have a cost that will be deducted from your balance.
+                </div>
+                <br /> <br />
+
+                @if(User.Identity.Name == Model.UserFile.Username)
+                {
+                    @using(Html.BeginForm("Delete","Files",FormMethod.Post))
+                    {
+                        <input type="hidden" name="id" value="@Model.UserFile.Id" />
+                        <input type="submit" value="Delete file" class="btn btn-danger" />
+                    }
+                    <div class="alert alert-danger">
+                        This action is irreversible.
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

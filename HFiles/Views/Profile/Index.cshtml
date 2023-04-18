@@ -1,0 +1,118 @@
+﻿@model HFiles.Models.ProfileModels.IndexProfileViewModel
+@{
+    ViewData["Title"] = "My profile";
+}
+
+@section Header {
+    <header>
+		<h2>My profile - @(Model.Profile != null? Model.Profile.Name: "") </h2>
+	</header>
+	<p>Check and update your profile</p>
+	<ul class="actions">
+		<li><a href="@Url.Action("Update","Profile")" class="button">Update profile</a></li>
+        <li><a href="@Url.Action("Index","Files")" class="button">Manage my files</a></li>
+	</ul>
+}
+
+
+<div class="wrapper">
+	<div class="container" id="main">
+		<div class="row col-12">
+            @if(Model.Profile == null)
+            {
+                <div class="alert alert-danger">
+                    You need to update your profile for manage files. @Html.ActionLink("Update and enable profile","Update")
+                </div>
+            }
+            
+        </div>
+		<div class="row gtr-150">
+			<div class="col-4 col-12-narrower">
+				<!-- Content -->
+                @if(Model.Profile != null)
+                {
+                     <article id="content">
+						<header>
+							<h2>Balance</h2>
+							<p>Balance: @Model.Balance HBAR <br />
+							My Account: <a target="_blank" href="https://testnet.hederaexplorer.io/search-details/account/@("0.0."+Model.Profile.AccountNum)">@("0.0."+Model.Profile.AccountNum)</a></p>
+						</header>
+						<p>
+                            You need to send HBAR to this account to have the money for managing files.
+						</p>
+					</article>
+                }
+			</div>
+			<div class="col-8 col-12-narrower">
+
+				<!-- Sidebar -->
+					<section id="sidebar">
+						<section>
+							<header>
+								<h3>My last files</h3>
+							</header>
+							<p>
+								
+                                @Html.ActionLink("Go to file manager","Index","Files", null,new {@class="btn btn-success"}) <br />
+
+                                @if(Model.LastFiles.Any())
+                                {
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Details
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    File name
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>
+                                                    Created At (UTC)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(var file in Model.LastFiles)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.ActionLink("Details","Detail","Files", new { id = file.Id})
+                                                    </td>
+                                                    <td>
+                                                        @file.Name
+                                                    </td>
+                                                    <td>
+                                                        @file.FileName
+                                                    </td>
+                                                    <td>
+                                                        @file.Description
+                                                    </td>
+                                                    <td>
+                                                        @file.CreatedAt
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <div>You have no file.</div>
+                                }
+                                @Html.ActionLink("Go to file manager","Index","Files", null,new {@class="btn btn-success"}) <br />
+                            </p>
+						</section>
+										
+					</section>
+
+			</div>
+		</div>
+						
+	</div>
+</div>

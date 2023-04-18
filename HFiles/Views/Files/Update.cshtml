@@ -1,0 +1,105 @@
+﻿@model HFiles.Models.FilesModels.UpdateFileViewModel
+@{
+}
+
+@section Header {
+    <header>
+		<h2>Update file - @Model.UserFile.Name</h2>
+	</header>
+	<ul class="actions">
+		<li><a href="@Url.Action("Index","Files")" class="button">Back</a></li>
+	</ul>
+}
+
+
+<div class="wrapper">
+	<div class="container" id="main">
+		@using(Html.BeginForm(FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.HiddenFor(x => x.Form.Id)
+	<div class="row">
+		<div class="col-2">
+			<p><br /></p>
+		</div>
+		<div class="col-3">
+			File name: 
+		</div>
+		<div class="col-6">
+			<p>@Html.TextBoxFor(x => x.Form.Name, new { @class = "form-control" })
+				<br />
+				@Html.ValidationMessageFor(x => x.Form.Name)
+			</p>
+			
+		</div>
+	</div>
+	
+	<br /><br />
+	<div class="row">
+		<div class="col-2">
+			<p><br /></p>
+		</div>
+		<div class="col-3">
+			Description: 
+		</div>
+		<div class="col-6">
+			<p>@Html.TextBoxFor(x => x.Form.Description, new {max="99", @class = "form-control" })
+				<br />
+				@Html.ValidationMessageFor(x => x.Form.Description)
+			</p>
+			
+		</div>
+	</div>
+	
+	<br /><br />
+	<div class="row">
+		<div class="col-2">
+			<p><br /></p>
+		</div>
+		<div class="col-3">
+			File: 
+		</div>
+		<div class="col-6">
+			<p><input type="file" name="Form.File" class="form-control" />
+				<br />
+				@Html.ValidationMessageFor(x => x.Form.File)
+			</p>
+			
+		</div>
+	</div>
+	
+	<br /><br />
+	<div class="row">
+		<div class="col-2">
+			<p><br /></p>
+		</div>
+		<div class="col-3">
+			Visibility: 
+		</div>
+		<div class="col-6">
+			<p>@Html.DropDownListFor(x => x.Form.IsPrivate, Model.Visibility,"Select an option", new { @class = "form-control" })
+				<br />
+				@Html.ValidationMessageFor(x => x.Form.IsPrivate)
+			</p>
+			
+		</div>
+	</div>
+	
+	<br /><br />
+	<div class="row">
+		<div class="col-2">
+			<p><br /></p>
+		</div>
+		<div class="col-3">
+			<p><br /></p>
+		</div>
+		<div class="col-6">
+			<p><input type="submit" value="Update file" class="btn-primary button" /></p>
+			<div class="alert alert-warning">
+                Update the content of this file will have a cost that will be deducted from your balance. Change the name, description and visibility have no cost.
+            </div>
+		</div>
+	</div>
+		}				
+	</div>
+</div>
